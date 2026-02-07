@@ -1,0 +1,254 @@
+﻿@using Ef_Core_CodeFirst.Models.Entities.Concretes
+@model Product
+
+<div class="product-lookup-container">
+    <div class="lookup-card">
+        <div class="lookup-header">
+            <div class="icon-circle-bg">
+                <i class="fas fa-barcode"></i>
+            </div>
+            <h2>Find Product</h2>
+            <p>Search by unique identification number</p>
+        </div>
+
+        <form asp-controller="Product" asp-action="GetProductById" method="post" class="lookup-inner-form">
+            <div class="input-container">
+                <input type="number" name="id" placeholder="Enter Product ID..." required />
+                <button type="submit" class="btn-lookup">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="lookup-results">
+        @if (Model != null)
+        {
+            <div class="product-detail-card animate-slide-up">
+                <div class="detail-header">
+                    <span class="product-tag">#@Model.Id</span>
+                    <span class="category-pill">@Model.Category?.Name</span>
+                </div>
+
+                <div class="detail-content">
+                    <label>Product Name</label>
+                    <h3 class="display-name">@Model.Name</h3>
+
+                    <div class="price-display">
+                        <span class="price-label">Market Value</span>
+                        <h2 class="display-price">$@Model.Price.ToString("F2")</h2>
+                    </div>
+                </div>
+
+                <div class="detail-footer">
+                    <a asp-action="EditProduct" asp-route-id="@Model.Id" class="btn-edit-link">
+                        <i class="fas fa-pen-nib"></i> Modify Details
+                    </a>
+                </div>
+            </div>
+        }
+        else if (Context.Request.Method == "POST")
+        {
+            <div class="error-state animate-fade">
+                <div class="error-icon">🕵️‍♂️</div>
+                <h3>Məhsul Tapılmadı</h3>
+                <p>Daxil etdiyiniz ID-yə uyğun heç bir məhsul sistemdə yoxdur.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    :root {
+        --lookup-theme: #6366f1;
+        --lookup-dark: #4338ca;
+        --soft-border: #e2e8f0;
+    }
+
+    .product-lookup-container {
+        max-width: 500px;
+        margin: 80px auto;
+        padding: 0 20px;
+    }
+
+    /* Axtarış Kartı */
+    .lookup-card {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 24px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        border: 1px solid var(--soft-border);
+        text-align: center;
+    }
+
+    .icon-circle-bg {
+        width: 60px;
+        height: 60px;
+        background: #f5f3ff;
+        color: var(--lookup-theme);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 15px;
+        font-size: 24px;
+    }
+
+    .lookup-header h2 {
+        font-weight: 800;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .lookup-header p {
+        font-size: 14px;
+        color: #64748b;
+        margin-top: 5px;
+        margin-bottom: 25px;
+    }
+
+    .input-container {
+        display: flex;
+        gap: 10px;
+        background: #f8fafc;
+        padding: 8px;
+        border-radius: 16px;
+        border: 2px solid #f1f5f9;
+        transition: 0.3s;
+    }
+
+        .input-container:focus-within {
+            border-color: var(--lookup-theme);
+            background: white;
+        }
+
+        .input-container input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+    .btn-lookup {
+        background: var(--lookup-theme);
+        color: white;
+        border: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-lookup:hover {
+            background: var(--lookup-dark);
+            transform: scale(1.05);
+        }
+
+    /* Detal Kartı */
+    .product-detail-card {
+        margin-top: 30px;
+        background: linear-gradient(145deg, #ffffff, #fdfdff);
+        border-radius: 24px;
+        padding: 30px;
+        border: 1px solid var(--soft-border);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    }
+
+    .detail-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .product-tag {
+        font-weight: 700;
+        color: #94a3b8;
+        font-size: 14px;
+    }
+
+    .category-pill {
+        background: #e0e7ff;
+        color: var(--lookup-theme);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .detail-content label {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #94a3b8;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+
+    .display-name {
+        font-size: 24px;
+        color: #1e293b;
+        margin: 5px 0 20px 0;
+    }
+
+    .price-display {
+        background: #f8fafc;
+        padding: 15px;
+        border-radius: 16px;
+    }
+
+    .display-price {
+        color: #059669;
+        margin: 0;
+        font-size: 28px;
+        font-weight: 800;
+    }
+
+    .detail-footer {
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px dashed #e2e8f0;
+        text-align: center;
+    }
+
+    .btn-edit-link {
+        color: var(--lookup-theme);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    /* Error State */
+    .error-state {
+        margin-top: 30px;
+        text-align: center;
+        padding: 30px;
+        background: #fff1f2;
+        border-radius: 20px;
+        color: #be123c;
+    }
+
+    .error-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    /* Animasiyalar */
+    .animate-slide-up {
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

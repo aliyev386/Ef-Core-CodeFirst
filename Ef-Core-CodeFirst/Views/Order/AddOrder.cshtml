@@ -1,0 +1,195 @@
+﻿@using Ef_Core_CodeFirst.Models.Entities.Concretes
+@model Order
+@{
+    var allProducts = ViewBag.Products;
+}
+
+<div class="order-wrapper">
+    <div class="order-card">
+        <div class="card-header">
+            <div class="icon-box">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h1>Create New Order</h1>
+            <p>Select products and set the order date</p>
+        </div>
+
+        <form asp-controller="Order" asp-action="AddOrder" method="post" class="modern-form">
+            <div asp-validation-summary="All" class="text-danger mb-3 small"></div>
+
+            <div class="form-group-custom">
+                <label asp-for="OrderDate">Placement Date</label>
+                <div class="input-with-icon">
+                    <input type="date" asp-for="OrderDate" class="custom-input">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <span asp-validation-for="OrderDate" class="error-text"></span>
+            </div>
+
+            <div class="form-group-custom">
+                <label>Select Products (Hold Ctrl to select multiple)</label>
+                <div class="select-wrapper">
+                    <select asp-for="Products" multiple class="custom-select">
+                        @foreach (var product in allProducts)
+                        {
+                            <option value="@product.Id">
+                                📦 @product.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+                <small class="helper-text">You can choose more than one product for this order.</small>
+            </div>
+
+            <div class="form-footer">
+                <button type="submit" class="btn-submit-order">
+                    Confirm Order <i class="fas fa-check-circle"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-order: #10b981; /* Emerald Green */
+        --primary-dark: #059669;
+        --bg-soft: #f0fdf4;
+    }
+
+    .order-wrapper {
+        min-height: 85vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+    }
+
+    .order-card {
+        width: 100%;
+        max-width: 600px;
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 20px 50px rgba(16, 185, 129, 0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    .card-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        background: var(--bg-soft);
+        color: var(--primary-order);
+        border-radius: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 15px;
+        font-size: 24px;
+    }
+
+    .card-header h1 {
+        font-size: 26px;
+        font-weight: 800;
+        color: #111827;
+        margin: 0;
+    }
+
+    .card-header p {
+        color: #6b7280;
+        margin-top: 5px;
+    }
+
+    /* Form Elementləri */
+    .form-group-custom {
+        margin-bottom: 25px;
+    }
+
+        .form-group-custom label {
+            display: block;
+            font-weight: 600;
+            font-size: 15px;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+    .custom-input, .custom-select {
+        width: 100%;
+        border: 2px solid #f3f4f6;
+        border-radius: 12px;
+        padding: 12px 15px;
+        font-size: 16px;
+        transition: 0.3s;
+        background: #f9fafb;
+        outline: none;
+    }
+
+        .custom-input:focus, .custom-select:focus {
+            border-color: var(--primary-order);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+    /* Select sahəsi üçün xüsusi dizayn */
+    .custom-select {
+        height: 150px; /* Multiple olduğu üçün hündürlük vacibdir */
+        padding: 10px;
+    }
+
+        .custom-select option {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 2px;
+        }
+
+            .custom-select option:checked {
+                background: var(--primary-order) !important;
+                color: white;
+            }
+
+    .helper-text {
+        color: #9ca3af;
+        display: block;
+        margin-top: 8px;
+        font-size: 13px;
+    }
+
+    /* Düymə */
+    .form-footer {
+        margin-top: 35px;
+    }
+
+    .btn-submit-order {
+        width: 100%;
+        padding: 16px;
+        background: var(--primary-order);
+        color: white;
+        border: none;
+        border-radius: 15px;
+        font-size: 17px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .btn-submit-order:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        }
+
+    .error-text {
+        color: #ef4444;
+        font-size: 13px;
+        margin-top: 5px;
+    }
+</style>

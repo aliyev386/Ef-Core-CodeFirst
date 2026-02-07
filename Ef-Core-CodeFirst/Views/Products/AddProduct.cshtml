@@ -1,0 +1,216 @@
+﻿@using Ef_Core_CodeFirst.Models.Entities.Concretes
+@using Ef_Core_CodeFirst.Controllers
+@model Product
+@{
+    var categories = ViewBag.Categories as List<Category>;
+}
+
+<div class="product-page-container">
+    <div class="product-form-card">
+        <div class="form-header">
+            <div class="header-icon">
+                <i class="fas fa-tag"></i>
+            </div>
+            <h2>Create Product</h2>
+            <p>Add a new item to your inventory</p>
+        </div>
+
+        <form asp-controller="Product" asp-action="AddProduct" method="post" class="styled-form">
+            <div class="input-group-modern">
+                <label asp-for="Name">Product Name</label>
+                <div class="input-relative">
+                    <i class="fas fa-shopping-bag prefix-icon"></i>
+                    <input asp-for="Name" placeholder="e.g. Wireless Mouse" autocomplete="off" />
+                </div>
+                <span asp-validation-for="Name" class="val-msg"></span>
+            </div>
+
+            <div class="row-flex">
+                <div class="input-group-modern flex-1">
+                    <label asp-for="Price">Price</label>
+                    <div class="input-relative">
+                        <span class="currency-prefix">$</span>
+                        <input asp-for="Price" type="number" step="0.01" placeholder="0.00" />
+                    </div>
+                </div>
+
+                <div class="input-group-modern flex-1">
+                    <label asp-for="CategoryId">Category</label>
+                    <div class="input-relative">
+                        <select asp-for="CategoryId">
+                            <option value="" disabled selected>Select...</option>
+                            @* Burada categories artıq tanınacaq *@
+                            @if (categories != null)
+                            {
+                                foreach (var item in categories)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        </select>
+                        <i class="fas fa-chevron-down suffix-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <button type="submit" class="btn-save-product">
+                    <span>Create Product</span>
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Sənin göndərdiyin CSS kodları bura daxildir... */
+    :root {
+        --mint: #27ae60;
+        --mint-light: #ebf9f1;
+        --dark-text: #2c3e50;
+        --border-color: #e0e6ed;
+    }
+
+    .product-page-container {
+        min-height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fcfcfd;
+        padding: 30px;
+    }
+
+    .product-form-card {
+        width: 100%;
+        max-width: 550px;
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02);
+        border: 1px solid var(--border-color);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .header-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--mint-light);
+        color: var(--mint);
+        border-radius: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 15px;
+        font-size: 24px;
+    }
+
+    .form-header h2 {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--dark-text);
+        margin: 0;
+    }
+
+    .form-header p {
+        color: #7f8c8d;
+        margin-top: 5px;
+    }
+
+    .styled-form .input-group-modern {
+        margin-bottom: 22px;
+    }
+
+    .styled-form label {
+        display: block;
+        font-weight: 700;
+        font-size: 14px;
+        color: #4b5563;
+        margin-bottom: 8px;
+        margin-left: 4px;
+    }
+
+    .input-relative {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+        .input-relative input, .input-relative select {
+            width: 100%;
+            padding: 13px 15px;
+            padding-left: 40px;
+            border-radius: 12px;
+            border: 2px solid #f1f5f9;
+            background: #f8fafc;
+            font-size: 16px;
+            transition: 0.3s;
+            appearance: none;
+        }
+
+    .prefix-icon, .currency-prefix {
+        position: absolute;
+        left: 15px;
+        color: #94a3b8;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    .suffix-icon {
+        position: absolute;
+        right: 15px;
+        color: #94a3b8;
+        pointer-events: none;
+    }
+
+    .input-relative input:focus, .input-relative select:focus {
+        border-color: var(--mint);
+        background: #fff;
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.1);
+    }
+
+    .row-flex {
+        display: flex;
+        gap: 20px;
+    }
+
+    .flex-1 {
+        flex: 1;
+    }
+
+    .btn-save-product {
+        width: 100%;
+        margin-top: 20px;
+        padding: 16px;
+        background: var(--dark-text);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .btn-save-product:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+    .val-msg {
+        font-size: 12px;
+        color: #e74c3c;
+        margin-top: 5px;
+        display: block;
+    }
+</style>

@@ -1,0 +1,204 @@
+﻿@using Ef_Core_CodeFirst.Models.Entities.Concretes
+@model Category
+
+<div class="category-wrapper">
+    <div class="category-card animate-fade-in">
+        <div class="card-header">
+            <div class="icon-box">
+                <i class="fas fa-folder-plus"></i>
+            </div>
+            <h1>New Category</h1>
+            <p>Create a logical group for your products</p>
+        </div>
+
+        <form asp-controller="Category" asp-action="AddCategory" method="post" class="category-form">
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+            <div class="input-group-custom">
+                <label asp-for="Name">Category Name</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-tag prefix-icon"></i>
+                    <input type="text" asp-for="Name" placeholder="e.g. Electronics, Fashion..." autocomplete="off">
+                </div>
+                <span asp-validation-for="Name" class="error-msg"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <span>Add Category</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="back-link">
+                <a asp-action="GetAllCategory"><i class="fas fa-chevron-left"></i> Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary: #4361ee;
+        --primary-dark: #3a0ca3;
+        --bg-color: #f8f9fa;
+        --text-main: #1a1a1a;
+        --text-muted: #888;
+    }
+
+    .category-wrapper {
+        min-height: 85vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--bg-color);
+        padding: 20px;
+    }
+
+    .category-card {
+        width: 100%;
+        max-width: 450px;
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        background: #eff2ff;
+        color: var(--primary);
+        border-radius: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 20px;
+        font-size: 24px;
+    }
+
+    .card-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+        .card-header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .card-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+    .input-group-custom label {
+        display: block;
+        font-weight: 700;
+        font-size: 13px;
+        color: #444;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .prefix-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #bdc3c7;
+    }
+
+    .input-group-custom input {
+        width: 100%;
+        padding: 14px 20px 14px 45px;
+        border-radius: 15px;
+        border: 2px solid #f1f1f1;
+        background: #fdfdfd;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+        .input-group-custom input:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+        }
+
+    .error-msg {
+        color: #e63946;
+        font-size: 12px;
+        margin-top: 6px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 15px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(67, 97, 238, 0.25);
+        }
+
+    .back-link {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+        .back-link a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+            .back-link a:hover {
+                color: var(--primary);
+            }
+
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+</style>

@@ -1,0 +1,247 @@
+﻿@using Ef_Core_CodeFirst.Models.Entities.Concretes
+@model Order
+
+<div class="search-container">
+    <div class="search-box">
+        <div class="search-header">
+            <i class="fas fa-file-search"></i>
+            <h2>Order Lookup</h2>
+            <p>Track or retrieve order details by ID</p>
+        </div>
+
+        <form asp-controller="Order" asp-action="GetOrderById" method="post" class="modern-search-form">
+            <div class="field-group">
+                <input type="number" name="id" placeholder="Ex: 1024" required />
+                <button type="submit">
+                    <i class="fas fa-search"></i> Find Order
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="result-display">
+        @if (Model != null)
+        {
+            <div class="order-invoice-card">
+                <div class="invoice-top">
+                    <span class="status-tag">Confirmed</span>
+                    <span class="order-id-label">#@Model.Id</span>
+                </div>
+
+                <div class="invoice-main">
+                    <div class="info-block">
+                        <label>Order Date</label>
+                        <h3>@Model.OrderDate.ToString("MMMM dd, yyyy")</h3>
+                    </div>
+
+                    @if (Model.Products != null && Model.Products.Any())
+                    {
+                        <div class="products-list">
+                            <label>Order Summary</label>
+                            <ul>
+                                @foreach (var item in Model.Products)
+                                {
+                                    <li><i class="fas fa-check"></i> @item.Name</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+
+                <div class="invoice-footer">
+                    <a asp-action="EditOrder" asp-route-id="@Model.Id" class="btn-manage">Edit Order</a>
+                </div>
+            </div>
+        }
+        else if (Context.Request.Method == "POST")
+        {
+            <div class="not-found-msg">
+                <div class="msg-icon">⚠️</div>
+                <h3>Order Not Found</h3>
+                <p>We couldn't find an order with the ID you entered. Please double-check and try again.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    :root {
+        --navy: #1e293b;
+        --accent: #3b82f6;
+        --border: #e2e8f0;
+    }
+
+    .search-container {
+        max-width: 550px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    /* Axtarış Qutusu */
+    .search-box {
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        text-align: center;
+        border: 1px solid var(--border);
+    }
+
+    .search-header i {
+        font-size: 40px;
+        color: var(--accent);
+        margin-bottom: 15px;
+    }
+
+    .search-header h2 {
+        color: var(--navy);
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+
+    .search-header p {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+        .field-group input {
+            padding: 14px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+            .field-group input:focus {
+                border-color: var(--accent);
+                outline: none;
+                box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            }
+
+        .field-group button {
+            background: var(--navy);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .field-group button:hover {
+                background: #000;
+                transform: translateY(-2px);
+            }
+
+    /* Nəticə Kartı (Invoice Style) */
+    .order-invoice-card {
+        margin-top: 30px;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        border: 1px solid var(--border);
+    }
+
+    .invoice-top {
+        background: #f8fafc;
+        padding: 15px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .status-tag {
+        background: #dcfce7;
+        color: #166534;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 4px 12px;
+        border-radius: 20px;
+        text-transform: uppercase;
+    }
+
+    .order-id-label {
+        font-weight: 700;
+        color: #94a3b8;
+    }
+
+    .invoice-main {
+        padding: 25px;
+    }
+
+    .info-block label, .products-list label {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #94a3b8;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+
+    .info-block h3 {
+        color: var(--navy);
+        margin-top: 5px;
+        font-size: 20px;
+    }
+
+    .products-list {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px dashed var(--border);
+    }
+
+        .products-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0 0;
+        }
+
+        .products-list li {
+            color: #475569;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .products-list i {
+            color: #10b981;
+            margin-right: 8px;
+        }
+
+    .invoice-footer {
+        padding: 20px 25px;
+        background: #f8fafc;
+        text-align: center;
+    }
+
+    .btn-manage {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    /* Not Found */
+    .not-found-msg {
+        margin-top: 30px;
+        text-align: center;
+        padding: 30px;
+        background: #fff1f2;
+        border-radius: 20px;
+        border: 1px solid #fda4af;
+    }
+
+    .msg-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+</style>

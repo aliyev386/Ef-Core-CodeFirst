@@ -1,0 +1,10 @@
+﻿using Ef_Core_CodeFirst.Models.Entities.Concretes;
+
+namespace Ef_Core_CodeFirst.Repositories.Abstract
+{
+    public interface IProductRepository : IBaseRepository<Product>
+    {
+        Task<List<Product>> GetAllWithCategoryAsync();
+        Task<Product> GetProductByIdWithCategoryAsync(int id);
+    }
+}

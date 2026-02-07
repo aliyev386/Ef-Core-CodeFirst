@@ -1,0 +1,169 @@
+﻿@using Ef_Core_CodeFirst.Models.Entities.Concretes
+@model Category
+
+<div class="edit-wrapper">
+    <div class="edit-card">
+        <div class="card-header">
+            <div class="icon-circle">
+                <i class="fas fa-edit"></i>
+            </div>
+            <h1>Update Category</h1>
+            <p>Modify the details of the existing category</p>
+        </div>
+
+        <form asp-controller="Category" asp-action="EditCategory" method="post" class="edit-form">
+            <input type="hidden" asp-for="Id" />
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="custom-alert">
+                    <i class="fas fa-exclamation-circle"></i> @ViewBag.Error
+                </div>
+            }
+
+            <div class="input-group-custom">
+                <label asp-for="Name">Category Name</label>
+                <input type="text" asp-for="Name" placeholder="Enter new name..." autocomplete="off">
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <div class="form-actions">
+                <a href="/Category/Index" class="btn-cancel">Back to List</a>
+                <button type="submit" class="btn-update">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .edit-wrapper {
+        min-height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f4f7f6;
+        padding: 20px;
+    }
+
+    .edit-card {
+        width: 100%;
+        max-width: 550px;
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        background: #fff4e5;
+        color: #ff8c00;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 15px;
+        font-size: 24px;
+    }
+
+    .card-header h1 {
+        font-size: 26px;
+        font-weight: 700;
+        color: #2d3436;
+        margin-bottom: 5px;
+    }
+
+    .card-header p {
+        color: #636e72;
+        font-size: 14px;
+    }
+
+    /* Input dizaynı */
+    .input-group-custom {
+        margin-bottom: 25px;
+    }
+
+        .input-group-custom label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .input-group-custom input {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid #dfe6e9;
+            font-size: 16px;
+            transition: 0.3s;
+            background: #fafafa;
+        }
+
+            .input-group-custom input:focus {
+                border-color: #ff8c00;
+                background: #fff;
+                outline: none;
+                box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
+            }
+
+    /* Xəta Mesajı */
+    .custom-alert {
+        background: #fff5f5;
+        color: #c0392b;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 14px;
+        margin-bottom: 20px;
+        border-left: 4px solid #e74c3c;
+    }
+
+    /* Düymələr */
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+    }
+
+    .btn-update {
+        flex: 2;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: #2d3436;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-update:hover {
+            background: #000;
+            transform: translateY(-2px);
+        }
+
+    .btn-cancel {
+        flex: 1;
+        padding: 14px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 12px;
+        background: #eee;
+        color: #636e72;
+        font-weight: 600;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+        .btn-cancel:hover {
+            background: #e2e2e2;
+            color: #2d3436;
+        }
+</style>
