@@ -8,5 +8,6 @@ namespace Ef_Core_CodeFirst.Models.Entities.Concretes
         public decimal Price { get; set; }
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
+        public ICollection<Order>? Orders { get; set; }
     }
 }

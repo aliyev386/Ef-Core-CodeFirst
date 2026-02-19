@@ -20,31 +20,42 @@ namespace Ef_Core_CodeFirst.Controllers
             return View();
         }
         //get all
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProduct()
         {
             var products = await _productRepository.GetAllWithCategoryAsync();
-            return View(products);
+            return View("/Views/Product/GetAllProduct.cshtml", products);
 
         }
         //add
         [HttpGet]
         public async Task<IActionResult> AddProduct()
         {
+            var categories = await _categoryRepository.GetAllAsync();
 
-            ViewBag.Categories = await _categoryRepository.GetAllAsync();
+            if (categories == null || !categories.Any())
+            {
+                return RedirectToAction("AddCategory", "Category");
+            }
+
+            ViewBag.Categories = categories;
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(Product product)
         {
+            if (product.CategoryId == 0)
+            {
+                ModelState.AddModelError("CategoryId", "Zehmet olmasa bir kategoriya secin.");
+            }
+
             if (ModelState.IsValid)
             {
                 await _productRepository.AddAsync(product);
-                return RedirectToAction("GetAllProducts");
+                return RedirectToAction("GetAllProduct");
             }
             ViewBag.Categories = await _categoryRepository.GetAllAsync();
-            return View();
+            return View(product);
         }
         //delete
         [HttpGet]
@@ -54,7 +65,7 @@ namespace Ef_Core_CodeFirst.Controllers
             if (existProduct != null)
             {
                 await _productRepository.DeleteAsync(id);
-                return RedirectToAction("GetAllProducts");
+                return RedirectToAction("GetAllProduct");
             }
             ViewBag.Error = "Product not found";
             return View(id);
@@ -85,7 +96,7 @@ namespace Ef_Core_CodeFirst.Controllers
                 existProduct.CategoryId = product.CategoryId;
                 
                 await _productRepository.UpdateAsync(existProduct);
-                return RedirectToAction("GetAllProducts");
+                return RedirectToAction("GetAllProduct");
             }
             return View(product);
         }

@@ -34,7 +34,6 @@ namespace Ef_Core_CodeFirst.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -59,9 +58,6 @@ namespace Ef_Core_CodeFirst.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -69,8 +65,6 @@ namespace Ef_Core_CodeFirst.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
                 });
@@ -90,7 +84,6 @@ namespace Ef_Core_CodeFirst.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
@@ -106,15 +99,19 @@ namespace Ef_Core_CodeFirst.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Ef_Core_CodeFirst.Models.Entities.Concretes.Order", b =>
+            modelBuilder.Entity("OrderProduct", b =>
                 {
-                    b.HasOne("Ef_Core_CodeFirst.Models.Entities.Concretes.Product", "Products")
-                        .WithMany("Orders")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("OrdersId")
+                        .HasColumnType("int");
 
-                    b.Navigation("Products");
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrdersId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("OrderProduct");
                 });
 
             modelBuilder.Entity("Ef_Core_CodeFirst.Models.Entities.Concretes.Product", b =>
@@ -128,14 +125,24 @@ namespace Ef_Core_CodeFirst.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("OrderProduct", b =>
+                {
+                    b.HasOne("Ef_Core_CodeFirst.Models.Entities.Concretes.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ef_Core_CodeFirst.Models.Entities.Concretes.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Ef_Core_CodeFirst.Models.Entities.Concretes.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Ef_Core_CodeFirst.Models.Entities.Concretes.Product", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,7 +20,7 @@ namespace Ef_Core_CodeFirst.Controllers
             return View();
         }
         //get all
-        public async Task<IActionResult> GetAllOrders() => View(await _orderRepository.GetAllOrdersWithProduct());
+        public async Task<IActionResult> GetAllOrder() => View(await _orderRepository.GetAllOrdersWithProduct());
         //get by id
         [HttpGet]
         public IActionResult GetOrderById() => View();
@@ -41,7 +41,7 @@ namespace Ef_Core_CodeFirst.Controllers
             if (ModelState.IsValid)
             {
                 await _orderRepository.AddAsync(order);
-                return RedirectToAction("GetAllOrders");
+                return RedirectToAction("GetAllOrder");
             }
             ViewBag.Products = await _productRepository.GetAllAsync();
             return View(order);
@@ -54,7 +54,7 @@ namespace Ef_Core_CodeFirst.Controllers
             if (existOrder != null)
             {
                 await _orderRepository.DeleteAsync(id);
-                return RedirectToAction("GetAllOrders");
+                return RedirectToAction("GetAllOrder");
             }
             return RedirectToAction("NotFound");
         }
@@ -92,7 +92,7 @@ namespace Ef_Core_CodeFirst.Controllers
                     existOrder.OrderDate = order.OrderDate;
 
                     await _orderRepository.UpdateAsync(existOrder);
-                    return RedirectToAction("GetAllOrders");
+                    return RedirectToAction("GetAllOrder");
                 }
                 return RedirectToAction("NotFound");
             }
